@@ -1,6 +1,6 @@
 {
   "name": "mm-login",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "app login to mm api",
   "repository": "conoverm/mm-zapier",
   "author": "<mconover@mediamath.com>",

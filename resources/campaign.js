@@ -1,7 +1,7 @@
 // get a single campaign
 const getCampaign = (z, bundle) => {
   const responsePromise = z.request({
-    url: `httpss://api.mediamath.com/api/v2.0/campaigns/${bundle.inputData.id}/`,
+    url: `https://api.mediamath.com/api/v2.0/campaigns/${bundle.inputData.id}/`,
   });
   return responsePromise
     .then(response => JSON.parse(response.content));
@@ -10,10 +10,7 @@ const getCampaign = (z, bundle) => {
 // get a list of campaigns
 const listCampaigns = (z) => {
   const responsePromise = z.request({
-    url: 'https://api.mediamath.com/api/v2.0/campaigns/',
-    params: {
-      order_by: 'id desc'
-    }
+    url: 'https://api.mediamath.com/api/v2.0/campaigns/'
   });
   return responsePromise
     .then(response => JSON.parse(response.content));
