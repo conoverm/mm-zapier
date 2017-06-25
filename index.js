@@ -1,3 +1,4 @@
+const CampaignResource = require('./resources/campaign');
 
 const authentication = require('./authentication');
 
@@ -27,6 +28,7 @@ const App = {
   ],
 
   resources: {
+    [CampaignResource.key]: CampaignResource,
   },
 
   // If you want your trigger to show up, you better include it here!
