@@ -19,7 +19,7 @@ describe('triggers', () => {
         .then(results => {
 
           should.exist(results)
-
+          console.info('results', results)
           const campaign = results[0];
 
           campaign.name.should.eql('NAME NAME');

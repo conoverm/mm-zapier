@@ -17,7 +17,8 @@ const getCampaign = (z, bundle) => {
   // You may return a promise or a normal data structure from any perform method.
   return z.request(requestOptions)
     .then((response) => {
-      // console.info('response', response)
+      z.console.info('triggers/campaigns response', response)
+
       return [response.json.data]
       // JSON.parse(response.content);
     });
