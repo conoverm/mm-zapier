@@ -12,18 +12,19 @@ describe('custom auth app', () => {
     const bundle = {
       authData: {
         api_key: process.env.T1APIKEY,
-	user: process.env.T1USER,
-	password: process.env.T1PASSWORD
+        user: process.env.T1USER,
+        password: process.env.T1PASSWORD
       }
     };
 
     appTester(App.authentication.test, bundle)
-      .then((response) => {
-       	response.status.should.eql(200);
-        response.json.data.should.have.property('session');
- /* .url.should.containEql('?api_key=my_key'); */
-        done();
-      })
-      .catch(done);
+    .then((response) => {
+      console.info('success response', response)
+      response.status.should.eql(200);
+      response.json.data.should.have.property('session');
+      /* .url.should.containEql('?api_key=my_key'); */
+      done();
+    })
+    .catch(done);
   });
 });
