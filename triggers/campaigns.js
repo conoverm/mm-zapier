@@ -19,9 +19,14 @@ const getCampaign = (z, bundle) => {
     .then((response) => {
       z.console.info('triggers/campaigns response', response)
 
+      if (!response || !response.json || !response.json.data) {
+        Throw({ 'no data': response })
+      }
+
       return [response.json.data]
       // JSON.parse(response.content);
-    });
+    })
+    .catch(err => console.error('err:', err));
 };
 
 // We recommend writing your triggers separate like this and rolling them
