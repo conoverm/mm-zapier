@@ -1,6 +1,8 @@
 const getCampaign = (z, bundle) => {
   // `z.console.log()` is similar to `console.log()`.
   // z.console.log(`bundle`, bundle);
+  console.log(`bundle`, bundle);
+  console.log(`z`, z);
 
   // You can build requests and our client will helpfully inject all the variables
   // you need to complete. You can also register middleware to control this.
@@ -8,8 +10,8 @@ const getCampaign = (z, bundle) => {
     url: `https://api.mediamath.com/api/v2.0/campaigns/${bundle.inputData.id}`,
     headers: {
       'Accept': `application/vnd.mediamath.v1+json`,
-    },
-    beforeRequest: []
+      'Cookies': `adama_session=${bundle.authData.sessionKey}`
+    }
   };
 
   // You may return a promise or a normal data structure from any perform method.
