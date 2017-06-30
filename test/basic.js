@@ -18,17 +18,10 @@ describe('custom auth app', () => {
   });
 
   it('has auth details added to every request', (done) => {
-    // Try changing the values of username or password to see how the test method behaves
-    zapier.tools.env.inject(); // testing only!
-    const bundle = {
-      authData: {
-        user: process.env.T1USER,
-        password: process.env.T1PASSWORD,
-        api_key: process.env.T1APIKEY
-      }
-    };
 
-    appTester(App.authentication.sessionConfig.perform, bundle)
+    zapier.tools.env.inject(); // testing only!
+
+    appTester(App.authentication.sessionConfig.perform)
     .then((response) => {
       response.should.have.property('sessionKey');
       done();
