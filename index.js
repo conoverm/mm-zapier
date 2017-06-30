@@ -14,14 +14,24 @@ const authentication = require('./authentication');
 // };
 
 const includeAdamaCookie = (request, z, bundle) => {
-  console.info('includeAdamaCookie: global.adamaSession=', global.adamaSession)
-
-  if (global.adamaSession) {
-    request.headers['Cookies'] = `adama_session=${global.adamaSession}`
+  if (bundle.authData.sessionKey) {
+    request.headers = request.headers || {};
+    request.headers['Cookies'] = `adama_session=${bundle.authData.sessionKey}`
   }
 
   return request;
 }
+
+
+// If we get a response and it is a 401, we can raise a special error telling Zapier to retry this after another exchange.
+const sessionRefreshIf401 = (response, z, bundle) => {
+  if (bundle.authData.sessionKey) {
+    if (response.status === 401) {
+      throw new z.errors.RefreshAuthError('Session key needs refreshing.');
+    }
+  }
+  return response;
+};
 
 const App = {
   // This is just shorthand to reference the installed dependencies you have. Zapier will
@@ -30,13 +40,13 @@ const App = {
   platformVersion: require('zapier-platform-core').version,
 
   authentication: authentication,
-    // includeApiKeyHeader
 
   beforeRequest: [
     includeAdamaCookie
   ],
 
   afterResponse: [
+    sessionRefreshIf401
   ],
 
   resources: {

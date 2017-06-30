@@ -1,4 +1,4 @@
-// I don't think I actually want this... trigger is like 'a thing happened'. Triggers define the thing that happened.
+
 
 const getCampaign = (z, bundle) => {
   // `z.console.log()` is similar to `console.log()`.
@@ -9,7 +9,6 @@ const getCampaign = (z, bundle) => {
   const requestOptions = {
     url: `https://api.mediamath.com/api/v2.0/campaigns/${bundle.inputData.id}`,
     headers: {
-      'Cookie' : `adama_session=${global.adamaSession}`,
       'Accept': `application/vnd.mediamath.v1+json`
     }
   };
@@ -17,16 +16,26 @@ const getCampaign = (z, bundle) => {
   // You may return a promise or a normal data structure from any perform method.
   return z.request(requestOptions)
     .then((response) => {
-      z.console.info('triggers/campaigns response', response)
+      z.console.log('getCampaign response', response)
+      if (response.status == 401) {
+        throw new Error(`status 401`)
+      }
 
       if (!response || !response.json || !response.json.data) {
-        Throw({ 'no data': response })
+        throw new Error({ 'no data': response })
+      }
+
+      if (response.json.meta.status === 'auth_required') {
+        throw new Error(`auth_required from adama`)
       }
 
       return [response.json.data]
-      // JSON.parse(response.content);
+      // return JSON.parse(response.data);
     })
-    .catch(err => console.error('err:', err));
+    // .catch(err => {
+    //   console.error('console error in getcampaign request', err);
+    //   return err;
+    // });
 };
 
 // We recommend writing your triggers separate like this and rolling them

@@ -7,6 +7,16 @@ const appTester = zapier.createAppTester(App);
 
 describe('custom auth app', () => {
 
+  it('should return error message from testAuth on initial session request', (done) => {
+
+    appTester(App.authentication.test /*, bundle */)
+    .then(err => {
+      should.equal(err.message, `not logged in or no session id`)
+      done()
+    })
+
+  });
+
   it('has auth details added to every request', (done) => {
     // Try changing the values of username or password to see how the test method behaves
     zapier.tools.env.inject(); // testing only!
@@ -18,15 +28,12 @@ describe('custom auth app', () => {
       }
     };
 
-    appTester(App.authentication.test, bundle)
+    appTester(App.authentication.sessionConfig.perform, bundle)
     .then((response) => {
-      console.info('success response.json.data', response.json.data)
-      response.status.should.eql(200);
-      response.json.data.should.have.property('session');
-      should.exist(global.adamaSession)
-      /* .url.should.containEql('?api_key=my_key'); */
+      response.should.have.property('sessionKey');
       done();
     })
     .catch(done);
   });
+
 });
