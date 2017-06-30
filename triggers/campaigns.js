@@ -4,11 +4,13 @@ const getCampaign = (z, bundle) => {
 
   // You can build requests and our client will helpfully inject all the variables
   // you need to complete. You can also register middleware to control this.
+
+  console.info('getcampaign bundle', bundle)
   const requestOptions = {
     url: `https://api.mediamath.com/api/v2.0/campaigns/${bundle.inputData.id}`,
     headers: {
       'Accept': `application/vnd.mediamath.v1+json`,
-      'Cookies': `adama_session=${bundle.authData.sessionKey}`
+      'Cookie': `adama_session=${bundle.authData.sessionKey}`
     }
   };
 

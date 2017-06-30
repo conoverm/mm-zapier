@@ -1,32 +1,39 @@
-const should = require('should'); // required to use .exist()
+// const should = require('should'); // required to use .exist()
 
-const zapier = require('zapier-platform-core');
+// const zapier = require('zapier-platform-core');
 
-const App = require('../index');
-const appTester = zapier.createAppTester(App);
+// const App = require('../index');
+// const appTester = zapier.createAppTester(App);
 
-describe('custom auth app', () => {
+// describe('custom auth app', () => {
 
-  it('should return error message from testAuth on initial session request', (done) => {
+//   it('perform login', (done) => {
 
-    appTester(App.authentication.test /*, bundle */)
-    .then(err => {
-      should.equal(err.message, `not logged in or no session id`)
-      done()
-    })
+//     zapier.tools.env.inject(); // testing only!
 
-  });
+//     appTester(App.authentication.sessionConfig.perform)
+//     .then((response) => {
+//       response.should.have.property('sessionKey');
+//       done();
+//     })
+//     .catch(done);
+//   });
 
-  it('has auth details added to every request', (done) => {
+//   it('App auth test should have adama_cookie on second request', (done) => {
 
-    zapier.tools.env.inject(); // testing only!
+//     const bundle = {
+//       authData: {
+//         sessionKey: 'new fake key'
+//       }
+//     };
 
-    appTester(App.authentication.sessionConfig.perform)
-    .then((response) => {
-      response.should.have.property('sessionKey');
-      done();
-    })
-    .catch(done);
-  });
+//     appTester(App.authentication.test, bundle)
+//     .catch(err => {
+//       err.name.should.equal('RefreshAuthError')
+//       done()
+//     })
+//     .catch(done);
+//   });
 
-});
+
+// });

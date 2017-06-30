@@ -5,18 +5,21 @@ const testAuth = (z, bundle) => {
 
   // This method can return any truthy value to indicate the credentials are valid.
   // Raise an error to show
+
+  console.info('testAuth bundle', bundle)
+  z.request.headers = z.request.headers || {};
+
   return z.request({
     method: 'GET',
     url: 'https://api.mediamath.com/api/v2.0/session',
     headers: {
-      'Accept': 'application/vnd.mediamath.v1+json'
+      'Accept': 'application/vnd.mediamath.v1+json',
+      'Cookie': `adama_session=${bundle.authData.sessionKey}`
     }
   })
   .then((response) => {
-    if (!response || !response.json || !response.json.data ||
-        !response.json.data.session ||
-        !response.json.data.session.sessionid) {
-      return Error('not logged in or no session id');
+    if (response.status == 401) {
+      throw new Error('not logged in or no session id');
     }
 
     return response;
@@ -25,7 +28,8 @@ const testAuth = (z, bundle) => {
 };
 
 
-const getSessionKey = (z, bundle) => {
+const login = (z, bundle) => {
+
   return z.request({
     method: 'POST',
     url: 'https://api.mediamath.com/api/v2.0/login',
@@ -39,14 +43,15 @@ const getSessionKey = (z, bundle) => {
       api_key: process.env.T1APIKEY || bundle.authData.T1APIKEY
     }
   }).then((response) => {
-    if (response.status === 403) {
-      return Error('The API Key you supplied is invalid');
-    }
 
-    // global.adamaSession = response.json.data.session.sessionid;
+    if (response.status === 403) {
+      throw new Error('The API Key you supplied is invalid');
+    }
+    console.info('login response.headers', response.headers)
+    console.info('login response.json', response.json)
 
     return {
-      sessionKey: response.json.data.session.sessionid
+      sessionKey: response.json.data.session.sessionid || 'new fake key'
     }
 
   });
@@ -54,7 +59,7 @@ const getSessionKey = (z, bundle) => {
 
 
 module.exports = {
-  type: 'custom',
+  type: 'session',
   // Define any auth fields your app requires here. The user will be prompted to enter this info when
   // they connect their account.
   fields: [
@@ -68,6 +73,6 @@ module.exports = {
 
   // zapier magic config?
   sessionConfig: {
-    perform: getSessionKey
+    perform: login
   }
 };
