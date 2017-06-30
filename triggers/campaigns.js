@@ -1,8 +1,6 @@
 const getCampaign = (z, bundle) => {
   // `z.console.log()` is similar to `console.log()`.
   // z.console.log(`bundle`, bundle);
-  console.log(`bundle`, bundle);
-  console.log(`z`, z);
 
   // You can build requests and our client will helpfully inject all the variables
   // you need to complete. You can also register middleware to control this.
