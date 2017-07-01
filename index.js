@@ -3,34 +3,19 @@ const CampaignResource = require('./resources/campaign');
 const campaignTrigger = require('./triggers/campaigns');
 const authentication = require('./authentication');
 
-// To include the API key header on all outbound requests, simply define a function here.
-// It runs runs before each request is sent out, allowing you to make tweaks to the request in a centralized spot
-// const includeApiKeyHeader = (request, z, bundle) => {
-//   if (bundle.authData.apiKey) {
-//     request.params = request.params || {};
-//     request.params.api_key = bundle.authData.apiKey;
-//   }
-//   return request;
-// };
-
 const includeAdamaCookie = (request, z, bundle) => {
-  // console.info('includeAdamaCookie request', request)
-  // console.info('includeAdamaCookie z', z)
-  console.info('includeAdamaCookie bundle', bundle)
+
   if (bundle.authData.sessionKey) {
     request.headers = request.headers || {};
     request.headers['Cookie'] = `adama_session=${bundle.authData.sessionKey}`
   }
 
-  console.info('request.headers', request.headers)
   return request;
 }
 
 
 // If we get a response and it is a 401, we can raise a special error telling Zapier to retry this after another exchange.
 const sessionRefreshIf401 = (response, z, bundle) => {
-  console.info('bundle.authData.sessionKey', bundle.authData.sessionKey)
-
   if (bundle.authData.sessionKey) {
     if (response.status === 401) {
       throw new z.errors.RefreshAuthError('Session key needs refreshing.');

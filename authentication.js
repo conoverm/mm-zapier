@@ -6,7 +6,6 @@ const testAuth = (z, bundle) => {
   // This method can return any truthy value to indicate the credentials are valid.
   // Raise an error to show
 
-  console.info('testAuth bundle', bundle)
   z.request.headers = z.request.headers || {};
 
   return z.request({
@@ -47,8 +46,6 @@ const login = (z, bundle) => {
     if (response.status === 403) {
       throw new Error('The API Key you supplied is invalid');
     }
-    console.info('login response.headers', response.headers)
-    console.info('login response.json', response.json)
 
     return {
       sessionKey: response.json.data.session.sessionid || 'new fake key'
